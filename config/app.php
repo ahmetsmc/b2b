@@ -74,7 +74,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Locale Configuration
+    | Application Default Locale Configuration
     |--------------------------------------------------------------------------
     |
     | The application locale determines the default locale that will be used
@@ -83,7 +83,20 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'default_locale' => env('APP_DEFAULT_LOCALE', 'tr'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Fallback Locale
+    |--------------------------------------------------------------------------
+    |
+    | The fallback locale determines the locale to use when the current one
+    | is not available. You may change the value to correspond to any of
+    | the language folders that are provided through your application.
+    |
+    */
+
+    'locale' => 'tr',
 
     /*
     |--------------------------------------------------------------------------
@@ -109,7 +122,7 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    'faker_locale' => 'tr_TR',
 
     /*
     |--------------------------------------------------------------------------
