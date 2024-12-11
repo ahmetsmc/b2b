@@ -2,49 +2,48 @@
 
 namespace App\Services\Repositories;
 
-use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Models\User;
-use App\Services\Interfaces\ProductInterface;
 use App\Traits\HasRepositoryRoof;
 use Illuminate\Database\Eloquent\Collection;
 
-class ProductRepository implements ProductInterface
+class ProductCategoryRepository
 {
     use HasRepositoryRoof;
 
-    public Product|null $product = null;
+    public ProductCategory|null $productCategory = null;
 
     public function index(): Collection
     {
-        return Product::all();
+        return ProductCategory::all();
     }
 
-    public function store($request): static
+    public function store($data): static
     {
-        $this->product = Product::create($request);
+        $this->productCategory = ProductCategory::create($data);
 
         return $this;
     }
 
     public function update(int $id, array $data): static
     {
-        $product = Product::find($id);
+        $productCategory = ProductCategory::find($id);
 
-        if (!$product) {
-            $this->setError(__('Product Not Found'));
+        if (!$productCategory) {
+            $this->setError(__('Product Category Not Found'));
             return $this;
         }
 
-        $product->update($data);
+        $productCategory->update($data);
 
         return $this;
     }
 
     public function delete(int $id): static
     {
-        $product = Product::find($id);
+        $productCategory = ProductCategory::find($id);
 
-        if (!$product) {
+        if (!$productCategory) {
             $this->setError(__('Product Not Found'));
             return $this;
         }
@@ -54,13 +53,13 @@ class ProductRepository implements ProductInterface
             // örneğin herhangi bir siparişteyse
         }
 
-        $product->delete();
+        $productCategory->delete();
 
         return $this;
     }
 
-    public function product(): ?Product
+    public function productCategory(): ?ProductCategory
     {
-        return $this->product;
+        return $this->productCategory;
     }
 }

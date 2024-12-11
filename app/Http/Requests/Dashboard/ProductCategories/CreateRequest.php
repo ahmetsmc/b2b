@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Dashboard\Products;
+namespace App\Http\Requests\Dashboard\ProductCategories;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -23,14 +23,10 @@ class CreateRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:500',
-            'category_id' => 'required|numeric|exists:product_categories,id',
-            'price' => 'required|money',
-            'tax_rate' => 'required|numeric|min:0|max:100',
-            'stock' => 'required|numeric|min:0',
-            'code' => 'required|string|unique:products,code',
-            'content' => 'string',
+            'parent_id' => 'required|numeric',
+            'tax_rate' => 'required|int|min:0|max:100',
             'status' => 'required|in:ACTIVE,PASSIVE',
-            'unit_id' => 'required|exists:product_units,id'
+            'ranking' => 'numeric'
         ];
     }
 }

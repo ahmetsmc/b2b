@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Dashboard\Products\CreateRequest;
+use App\Models\Product;
 use App\Services\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 
@@ -24,12 +25,26 @@ class TestController extends Controller
 
     public function test2()
     {
+        $product = Product::latest()->first();
+
+        return [$product->unit, $product->id];
         return view('test.index');
     }
 
-    public function test3(CreateRequest $request){
+    public function test3(CreateRequest $request)
+    {
         $process = $this->productRepository->store($request->validated());
 
         return dd($process);
+    }
+
+    public function test4()
+    {
+        $process = $this->productRepository->update(5, ['test']);
+    }
+
+    public function test5()
+    {
+        $process = $this->productRepository->delete(5);
     }
 }
