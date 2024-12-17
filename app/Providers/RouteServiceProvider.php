@@ -29,7 +29,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->routes(function () {
-            Route::domain('api.b2b.test')
+            Route::domain('api.' . parse_url(config('app.url'), PHP_URL_HOST))
                 ->middleware('api')
                 ->group(base_path('routes/api.php'));
 
