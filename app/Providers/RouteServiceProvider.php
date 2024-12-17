@@ -35,6 +35,21 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+
+            $this->loadDomainRoutes();
         });
+    }
+
+    /**
+     * Load routes per by domain
+     */
+    protected function loadDomainRoutes(): void
+    {
+        $domainRoutePath = base_path('routes/domains');
+
+        foreach (glob("{$domainRoutePath}/*.php") as $file) {
+            Route::middleware('web')
+                ->group($file);
+        }
     }
 }

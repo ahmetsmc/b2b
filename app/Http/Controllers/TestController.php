@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Dashboard\Auth\LoginRequest;
 use App\Http\Requests\Dashboard\Products\CreateRequest;
 use App\Models\Product;
+use App\Services\Repositories\AuthRepository;
 use App\Services\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 
@@ -23,8 +25,20 @@ class TestController extends Controller
         return dd($process->success(), $process->errors());
     }
 
-    public function test2()
+    public function test2(LoginRequest $request)
     {
+        $authRepository = new AuthRepository();
+        $attempt = $authRepository->setLocale('tr')->attempt(
+            $request->validated('email'),
+            $request->validated('password'),
+        );
+
+        if ($attempt->success()){
+            return $attempt->getUser();
+        }else{
+            return $attempt->errors()->first();
+        }
+
         $product = Product::latest()->first();
 
         return [$product->unit, $product->id];
