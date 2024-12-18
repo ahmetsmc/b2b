@@ -28,8 +28,8 @@ class AppServiceProvider extends ServiceProvider
         date_default_timezone_set('Europe/Istanbul');
         Carbon::setLocale(config('app.locale'));
         setlocale(LC_TIME, LaravelLocalization::getCurrentLocaleRegional());
-        Paginator::defaultView('vendor.pagination.default');
-        Paginator::defaultSimpleView('vendor.pagination.default');
+        Paginator::defaultView('vendor.pagination.bootstrap-5');
+        Paginator::defaultSimpleView('vendor.pagination.bootstrap-5');
 
         if (config('app.url') == "http://localhost:8000"){
             Mail::alwaysTo('ahmetalpersam@gmail.com');

@@ -14,9 +14,18 @@ class ProductRepository implements ProductInterface
 
     public Product|null $product = null;
 
-    public function index(): Collection
+    public function index()
     {
-        return Product::all();
+        return Product::paginate($this->perBy);
+    }
+
+    public function filter(array $data = [])
+    {
+        return Product::when(isset($data['q']), function ($query) use ($data) {
+            $query->where('title', 'LIKE', '%' . $data['q'] . '%');
+        })->when(isset($data['category_id']), function ($query) use ($data) {
+            $query->where('category_id', $data['category_id']);
+        })->paginate($this->perBy);
     }
 
     public function store($request): static

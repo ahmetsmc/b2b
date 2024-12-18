@@ -13,6 +13,11 @@ class AuthRepository
 
     public User|null $user;
 
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
     public function attempt($email, $password, $guard = 'web'): static
     {
         $user = User::where('email', $email)->first();

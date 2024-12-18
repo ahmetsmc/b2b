@@ -10,7 +10,7 @@ interface ProductInterface
     /**
      * @return Collection
      */
-    public function index(): Collection;
+//    public function index(): Collection;
 
     /**
      * @return bool

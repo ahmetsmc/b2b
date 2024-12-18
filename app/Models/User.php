@@ -50,7 +50,8 @@ class User extends Authenticatable
         'last_login_at' => 'datetime'
     ];
 
-    public function getLocale(){
+    public function getLocale()
+    {
         return $this->locale;
     }
 
@@ -62,5 +63,25 @@ class User extends Authenticatable
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    public function preference($key, $default = null): ?string
+    {
+        $value = $this->preferences?->$key;
+
+        return !is_null($value)
+            ? $value
+            : $default;
+    }
+
+    public function getTranslatedRoleNames($locale)
+    {
+        $roles = [];
+
+        foreach ($this->getRoleNames() as $roleName){
+            $roles[] = $roleName;
+        }
+
+        return $roles;
     }
 }

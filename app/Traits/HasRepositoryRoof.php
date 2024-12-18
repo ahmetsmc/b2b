@@ -11,6 +11,10 @@ trait HasRepositoryRoof
 
     public object $errors;
 
+    public int $perBy = 12;
+
+    public array $withEagerLoads = [];
+
     public User|null $transactionBy = null;
 
     public function __construct()
@@ -57,5 +61,17 @@ trait HasRepositoryRoof
     public function locale()
     {
         return $this->locale;
+    }
+
+    public function setPerBy(int $perBy): static
+    {
+        $this->perBy = $perBy;
+        return $this;
+    }
+
+    public function setEagerRelations(array $with): static
+    {
+        $this->withEagerLoads = $with;
+        return $this;
     }
 }
