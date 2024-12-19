@@ -50,8 +50,8 @@
 
                         <div class="card-body p-4">
                             <div class="text-center mt-2">
-                                <h5 class="text-primary">{{ __('Login') }}</h5>
-                                <p class="text-muted">{{ __('Login Description') }}</p>
+                                <h5 class="text-primary">Giriş Yap</h5>
+                                <p class="text-muted">Devam etmek için lütfen giriş yapın</p>
                             </div>
                             <div class="p-2 mt-4">
                                 @if($errors->any())
@@ -64,24 +64,24 @@
                                 <form action="{{ url()->current() }}" method="POST">
                                     @csrf
                                     <div class="mb-3">
-                                        <label for="email" class="form-label">{{ __('Email') }}</label>
+                                        <label for="email" class="form-label">E-posta adresi</label>
                                         <input type="email" class="form-control" id="email" name="email"
-                                               placeholder="{{ __('Enter your email') }}" tabindex="1" autofocus required>
+                                               placeholder="E-posta adresi" tabindex="1" autofocus required>
                                     </div>
 
                                     <div class="mb-3">
                                         <div class="float-end">
                                             <a href="" class="text-muted">
-                                                {{ __('Forgot password') }}
+                                                Şifremi unuttum
                                             </a>
                                         </div>
                                         <label class="form-label" for="password-input">
-                                            {{ __('Password') }}
+                                            Şifre
                                         </label>
                                         <div class="position-relative auth-pass-inputgroup mb-3">
                                             <input type="password" class="form-control pe-5 password-input"
                                                    name="password"
-                                                   placeholder="{{ __('Enter your password') }}" id="password-input"
+                                                   placeholder="Şifre" id="password-input"
                                                    tabindex="2"
                                                    required>
                                             <button
@@ -96,13 +96,13 @@
                                                id="auth-remember-check"
                                                tabindex="3">
                                         <label class="form-check-label" for="auth-remember-check">
-                                            {{ __('Remember me') }}
+                                            Beni hatırla
                                         </label>
                                     </div>
 
                                     <div class="mt-4">
                                         <button class="btn btn-success w-100" type="submit" tabindex="4">
-                                            {{ __('Login') }}
+                                            Giriş Yap
                                         </button>
                                     </div>
                                 </form>

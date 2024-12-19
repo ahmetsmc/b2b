@@ -1,2 +1,13 @@
-
 /*# sourceMappingURL=custom.min.css.map */
+.form-group{
+    position: relative;
+}
+
+.form-group.invalid-form-group > .form-label {
+    color: var(--vz-danger-text-emphasis);
+}
+
+.form-group.invalid-form-group > .form-control ,
+.form-group.invalid-form-group > .form-select{
+    border-color: var(--vz-danger-text-emphasis)
+}

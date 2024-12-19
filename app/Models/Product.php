@@ -34,4 +34,9 @@ class Product extends Model
     {
         return $this->hasOne(ProductUnit::class, 'id', 'unit_id');
     }
+
+    public function isActive(): bool
+    {
+        return $this->status == "ACTIVE";
+    }
 }

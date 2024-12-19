@@ -64,6 +64,9 @@
 <!-- App js -->
 <script src="{{ asset('assets/dashboard/js/app.js') }}"></script>
 <script src="{{ asset('assets/dashboard/js/generic.js') }}"></script>
+
+@stack('javascript')
+
 </body>
 
 </html>

@@ -15,6 +15,7 @@ Route::domain('dashboard.b2b.test')->as('dashboard.')->group(function () {
         Route::prefix('products')->as('products.')->group(function () {
             Route::get('/', [ProductsController::class, 'index'])->name('index');
             Route::get('/create', [ProductsController::class, 'create'])->name('create');
+            Route::post('/create', [ProductsController::class, 'store']);
         });
     });
 });

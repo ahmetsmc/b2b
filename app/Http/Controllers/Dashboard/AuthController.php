@@ -36,7 +36,7 @@ class AuthController extends Controller
         if ($attempt->success()) {
             return redirect()->route('dashboard.index');
         } else {
-            return $attempt->errors()->first();
+            return back()->withErrors($attempt->errors());
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services\Repositories;
 
 use App\Models\Product;
+use App\Models\ProductUnit;
 use App\Models\User;
 use App\Services\Interfaces\ProductInterface;
 use App\Traits\HasRepositoryRoof;
@@ -71,5 +72,9 @@ class ProductRepository implements ProductInterface
     public function product(): ?Product
     {
         return $this->product;
+    }
+
+    public function getProductUnits(){
+        return ProductUnit::all();
     }
 }

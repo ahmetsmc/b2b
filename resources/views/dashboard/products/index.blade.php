@@ -6,12 +6,11 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Products</h4>
+                <h4 class="mb-sm-0">Ürünler</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
-                        <li class="breadcrumb-item active">Products</li>
+                        <li class="breadcrumb-item active">Ürünler</li>
                     </ol>
                 </div>
 
@@ -325,15 +324,8 @@
             <div>
                 <div class="card">
                     <div class="card-header border-0">
-                        <div class="row g-4">
-                            <div class="col-sm-auto">
-                                <div>
-                                    <a href="{{ route('dashboard.products.create') }}" class="btn btn-success">
-                                        <i class="ri-add-line align-bottom me-1"></i> Ürün Ekle
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-sm">
+                        <div class="d-flex justify-content-between">
+                            <div>
                                 <div class="d-flex justify-content-sm-end align-items-center">
                                     @if(request()->filled('q'))
                                         <a href="{{ route('dashboard.products.index') }}" class="btn btn-light ms-2">
@@ -348,6 +340,13 @@
                                     </form>
                                 </div>
                             </div>
+                            <div>
+                                <div>
+                                    <a href="{{ route('dashboard.products.create') }}" class="btn btn-success">
+                                        <i class="ri-add-line align-bottom me-1"></i> Ürün Ekle
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -356,11 +355,13 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th style="width: 40px" class="text-center">Seç</th>
-                                    <th>Ürün</th>
+                                    <th style="width: 40px" class="text-center">#</th>
+                                    <th>Ürün Kodu</th>
+                                    <th>Başlık</th>
                                     <th>Kategori</th>
                                     <th>Stok Sayısı</th>
                                     <th>Fiyat</th>
+                                    <th>Durum</th>
                                     <th class="text-end">İşlem</th>
                                 </tr>
                                 </thead>
@@ -370,19 +371,26 @@
                                         <td style="width: 40px" class="text-center">
                                             <input type="checkbox" class="form-check form-check-info form-check-input">
                                         </td>
+                                        <td>{{ $product->code }}</td>
                                         <td>{{ $product->title }}</td>
                                         <td>{{ $product->category->title }}</td>
                                         <td>{{ $product->stock }}</td>
-                                        <td>{{ $product->price }}</td>
+                                        <td>{{ money($product->price, 'TRY', true) }}</td>
+                                        <td>
+                                            <div class="form-check form-switch form-switch-md">
+                                                <input class="form-check-input" type="checkbox" role="switch" data-id="{{ $product->id }}" @checked($product->isActive())>
+                                            </div>
+                                        </td>
                                         <td class="text-end">
-                                            <a href="" class="btn btn-sm btn-light">
-                                                <i class="ri-edit-2-line"></i>
-                                                Düzenle
-                                            </a>
-                                            <a href="" class="btn btn-sm btn-light">
-                                                <i class="ri-delete-back-2-line"></i>
-                                                Kaldır
-                                            </a>
+                                            <div class="btn-group">
+                                                <a href="" type="button" class="btn btn-primary btn-sm">Düzenle</a>
+                                                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                                <div class="dropdown-menu" style="">
+                                                    <a class="dropdown-item" href="#">Görseller</a>
+                                                    <a class="dropdown-item" href="#">Varyasyonlar</a>
+                                                    <a class="dropdown-item" href="#">Kaldır</a>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
