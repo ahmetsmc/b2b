@@ -48,25 +48,56 @@
 <script src="{{ asset('assets/dashboard/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
 <script src="{{ asset('assets/dashboard/js/plugins.js') }}"></script>
 
-<!-- apexcharts -->
-<script src="{{ asset('assets/dashboard/libs/apexcharts/apexcharts.min.js') }}"></script>
-
-<!-- Vector map-->
-<script src="{{ asset('assets/dashboard/libs/jsvectormap/jsvectormap.min.js') }}"></script>
-<script src="{{ asset('assets/dashboard/libs/jsvectormap/maps/world-merc.js') }}"></script>
-
-<!--Swiper slider js-->
-<script src="{{ asset('assets/dashboard/libs/swiper/swiper-bundle.min.js') }}"></script>
 
 <!-- Dashboard init -->
 <script src="{{ asset('assets/dashboard/js/pages/dashboard-ecommerce.init.js') }}"></script>
 
+<!-- swiper init -->
+<script src="{{ asset('assets/dashboard/libs/swiper/swiper.min.js') }}"></script>
+
+<!-- toastify js -->
+<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/toastify-js'></script>
+
+<!-- choices -->
+<script src="{{ asset('assets/dashboard/libs/choices.js/public/assets/scripts/choices.min.js') }}"></script>
+
+<!-- editor -->
+<script src="{{ asset('assets/dashboard/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js') }}"></script>
+
+<!-- input masks -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
+
+<!-- fancybox -->
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+
+<!-- sweetalert -->
+<script src="{{ asset('assets/dashboard/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+
+<!-- sortable js-->
+<script src="http://SortableJS.github.io/Sortable/Sortable.js"></script>
+
 <!-- App js -->
 <script src="{{ asset('assets/dashboard/js/app.js') }}"></script>
-<script src="{{ asset('assets/dashboard/js/generic.js') }}"></script>
+<script src="{{ asset('assets/dashboard/generic.js') }}"></script>
 
-@stack('javascript')
+@if(session()->has('toast_success'))
+    <script>
+        $(document).ready(function () {
+            notify("success", "{{ session()->get('toast_success') }}");
+        });
+    </script>
+@endif
 
-</body>
+@if(session()->has('error_success'))
+    <script>
+        $(document).ready(function () {
+            notify("error", "{{ session()->get('error_success') }}");
+        });
+    </script>
+    @endif
 
-</html>
+    @stack('javascript')
+
+    </body>
+
+    </html>

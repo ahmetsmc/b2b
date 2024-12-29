@@ -29,6 +29,7 @@ class Number extends Component
         $this->label = !$this->label ? $this->placeholder : $this->label;
         $this->id = !$this->id ? str($this->name . rand(1000000, 99999999))->camel() : $this->id;
         $this->groupClass = !$this->error ? "form-group" : "form-group invalid-form-group";
+        $this->value = !$this->value ? old($this->name) : $this->value;
     }
 
     /**

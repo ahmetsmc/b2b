@@ -28,10 +28,20 @@
     <link href="{{ asset('assets/dashboard/css/app.min.css') }}" rel="stylesheet" type="text/css"/>
     <!-- custom Css-->
     <link href="{{ asset('assets/dashboard/css/custom.min.css') }}" rel="stylesheet" type="text/css"/>
+    <!-- jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- fancybox -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>
+    <!-- sweetalert -->
+    <link rel="stylesheet" href="{{ asset('assets/dashboard/libs/sweetalert2/sweetalert2.min.css') }}"/>
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    @stack('head')
 
 </head>
 
-<body>
+<body class="loader">
 
 <div id="layout-wrapper">
 

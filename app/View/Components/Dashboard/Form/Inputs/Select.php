@@ -27,6 +27,7 @@ class Select extends Component
         $this->class = "form-select" . $this->class;
         $this->id = !$this->id ? str($this->name . rand(1000000, 99999999))->camel() : $this->id;
         $this->groupClass = !$this->error ? "form-group" : "form-group invalid-form-group";
+        $this->selected = !$this->selected ? old($this->name) : $this->selected;
     }
 
     /**

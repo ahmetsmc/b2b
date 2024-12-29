@@ -3,7 +3,7 @@
         <label for="{{ $id }}" class="form-label">{{ $label }}</label>
     @endif
 
-    <select class="{{ $class }}" id="{{ $id }}" name="{{ $name }}" @if($required) required @endif>
+    <select class="{{ $class }}" id="{{ $id }}" name="{{ $name }}" @if($required) data-choices required @endif>
         @if($placeholder)
             <option value="">{{ $placeholder }}</option>
         @endif

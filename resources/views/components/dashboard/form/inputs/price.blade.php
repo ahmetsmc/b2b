@@ -20,3 +20,20 @@
         @endif
     </div>
 </div>
+
+
+@push('javascript')
+    <script>
+        $(document).ready(function () {
+            $('#{{ $id }}').inputmask({
+                alias: "currency",
+                groupSeparator: ".",
+                decimalSeparator: ",",
+                digits: 2,
+                rightAlign: false,
+                autoUnmask: true,
+                removeMaskOnSubmit: true
+            })
+        })
+    </script>
+@endpush
