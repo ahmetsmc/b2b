@@ -51,6 +51,9 @@ class ProductRepository implements ProductInterface
             $query->where('category_id', $data['category_id']);
         })->when(isset($data['categories']) && is_array($data['categories']), function ($query) use ($data) {
             $query->whereIn('category_id', $data['categories']);
+        })->when(isset($data['stock']), function ($query) use ($data) {
+            $operator = $data['stock'] != 1 ? '<=' : '>=';
+            $query->where('stock', $operator, 0);
         })->paginate($this->perBy);
     }
 
@@ -339,7 +342,7 @@ class ProductRepository implements ProductInterface
         foreach ($actions as $field => $action) {
             if (isset($action['status']) && !is_null($action['status'])) {
                 foreach ($products as $product) {
-                    if (isset($action['value']) && !is_null($action['value'])){
+                    if (isset($action['value']) && !is_null($action['value'])) {
                         $value = match ($action['status']) {
                             'update' => $action['value'],
                             'add' => $product->$field + (int)$action['value'],
