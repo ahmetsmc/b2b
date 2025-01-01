@@ -45,7 +45,7 @@
                                 <a href="{{ route('dashboard.products.index') }}" class="nav-link">Ürün Listesi</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('dashboard.products.index') }}" class="nav-link">Kategori Listesi</a>
+                                <a href="{{ route('dashboard.products.categories.index') }}" class="nav-link">Ürün Grubu Listesi</a>
                             </li>
                         </ul>
                     </div>

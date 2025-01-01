@@ -33,7 +33,33 @@ class UpdateRequest extends FormRequest
             'content' => 'nullable|string',
             'status' => 'required|in:ACTIVE,PASSIVE',
             'unit_id' => 'required|exists:product_units,id',
-            'lead_time' => 'nullable|max:500'
+            'lead_time' => 'nullable|max:500',
+            'variants' => 'nullable|array',
+            'variants.*.title' => 'required|max:500',
+            'variants.*.code' => 'required|string',
+            'variants.*.price' => 'required|money',
+            'variants.*.stock' => 'required|numeric|min:0',
+            'variants.*.image' => 'nullable|image|max:5000'
         ];
+    }
+
+    /**
+     * Get custom attribute names for validator.
+     *
+     * @return array
+     */
+    public function attributes(): array
+    {
+        $attributes = [];
+
+        if ($this->has('variants')) {
+            foreach ($this->input('variants') as $index => $variant) {
+                $attributes["variants.{$index}.stock"] = str(trans('Product variants stock'))->lower();
+                $attributes["variants.{$index}.title"] = str(trans('Product variants title'))->lower();
+                $attributes["variants.{$index}.code"] = str(trans('Product variants code'))->lower();
+            }
+        }
+
+        return $attributes;
     }
 }

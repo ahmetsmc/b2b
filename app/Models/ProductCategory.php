@@ -29,4 +29,9 @@ class ProductCategory extends Model
     {
         return $this->hasMany(ProductCategory::class, 'parent_id');
     }
+
+    public function scopeFilterParent($query, $parent = null)
+    {
+        return $query->where('parent_id', $parent);
+    }
 }

@@ -6,11 +6,11 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Ürünler</h4>
+                <h4 class="mb-sm-0">Ürün Grupları</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item active">Ürünler</li>
+                        <li class="breadcrumb-item active">Ürün Grupları</li>
                     </ol>
                 </div>
 
@@ -20,98 +20,31 @@
     <!-- end page title -->
 
     <div class="row">
-        <div class="col-xl-3 col-lg-4">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex">
-                        <div class="flex-grow-1">
-                            <h5 class="fs-16 mb-0">Ürünleri Filtrele</h5>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <a href="{{ route('dashboard.products.index') }}" class="text-decoration-underline">
-                                Filtreyi Temizle
-                            </a>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="card mb-0">
-                    <form class="search-box" method="GET" action="{{ url()->current() }}">
-                        <div class="card-body">
-                            <div class="accordion-body text-body">
-                                <div class="position-relative mb-4">
-                                    <input type="text" class="form-control" name="q" placeholder="Ürünlerde arayın"
-                                           value="{{ request()->input('q') }}">
-                                    <i class="ri-search-line search-icon"></i>
-                                </div>
-                                <div class="d-flex flex-column gap-2 mb-4">
-                                    <p class="text-muted text-uppercase mb-1">KATEGORİLER</p>
-                                    @foreach($categories as $category)
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox"
-                                                   name="categories[]"
-                                                   value="{{ $category->id }}"
-                                                   id="categoryFilter{{ $category->id }}"
-                                                @checked(request()->has('categories') && in_array($category->id, request()->input('categories')))>
-                                            <label class="form-check-label" for="categoryFilter{{ $category->id }}">
-                                                {{ $category->title }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-
-                                <div class="d-flex flex-column gap-2">
-                                    <p class="text-muted text-uppercase mb-1">STOK DURUMU</p>
-                                    @foreach([1 => 'ONLY_AVAILABLE', 0 => 'ONLY_OUT_OF_STOCK'] as $key => $stock_status)
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio"
-                                                   name="stock"
-                                                   value="{{ $key }}"
-                                                   id="stockFilter{{ str($stock_status)->camel() }}" @checked(request()->has('stock') && request()->input('stock') == $key)>
-                                            <label class="form-check-label"
-                                                   for="stockFilter{{ str($stock_status)->camel() }}">
-                                                {{ str_contains($stock_status, 'AVAILABLE') ? 'Sadece Stokta Olanlar' : 'Sadece Stokta Olmayanlar' }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                </div>
-
-                                <div class="position-sticky top-0">
-                                    <button type="submit" class="btn btn-primary w-100 mt-2">Seçenekleri Uygula</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <!-- end card -->
-        </div>
-        <!-- end col -->
-
-        <div class="col-xl-9 col-lg-8">
+        <div class="col-xl-12 col-lg-12">
             <div>
                 <div class="card">
                     <div class="card-header border-0">
                         <div class="d-flex justify-content-between">
                             <div>
-                                {{--                                <div class="d-flex justify-content-sm-end align-items-center">--}}
-                                {{--                                    @if(request()->filled('q'))--}}
-                                {{--                                        <a href="{{ route('dashboard.products.index') }}" class="btn btn-light ms-2">--}}
-                                {{--                                            <i class="ri-close-circle-line search-icon"></i>--}}
-                                {{--                                            Sıfırla--}}
-                                {{--                                        </a>--}}
-                                {{--                                    @endif--}}
-                                {{--                                    <form class="search-box ms-2" method="GET" action="{{ url()->current() }}">--}}
-                                {{--                                        <input type="text" class="form-control" id="searchProductList" name="q"--}}
-                                {{--                                               placeholder="Ürünlerde arayın" value="{{ request()->input('q') }}">--}}
-                                {{--                                        <i class="ri-search-line search-icon"></i>--}}
-                                {{--                                    </form>--}}
-                                {{--                                </div>--}}
+                                <div class="d-flex justify-content-sm-end align-items-center">
+                                    @if(request()->filled('q'))
+                                        <a href="{{ route('dashboard.products.index') }}" class="btn btn-light ms-2">
+                                            <i class="ri-close-circle-line search-icon"></i>
+                                            Sıfırla
+                                        </a>
+                                    @endif
+                                    <form class="search-box ms-2" method="GET" action="{{ url()->current() }}">
+                                        <input type="text" class="form-control" id="searchProductList" name="q"
+                                               placeholder="Ürünlerde arayın" value="{{ request()->input('q') }}">
+                                        <i class="ri-search-line search-icon"></i>
+                                    </form>
+                                </div>
                             </div>
                             <div>
                                 <div>
                                     <a href="{{ route('dashboard.products.create') }}" class="btn btn-success">
-                                        <i class="ri-add-line align-bottom me-1"></i> Ürün Ekle
+                                        <i class="ri-add-line align-bottom me-1"></i> Ürün Grubu Ekle
                                     </a>
                                 </div>
                             </div>
@@ -137,7 +70,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @forelse($products as $product)
+                                @forelse($categories as $product)
                                     <tr>
                                         <td style="width: 40px" class="text-center">
                                             <input type="checkbox"
@@ -189,7 +122,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        {!! $products->withQueryString()->links() !!}
+                        {!! $categories->withQueryString()->links() !!}
                     </div>
                 </div>
             </div>

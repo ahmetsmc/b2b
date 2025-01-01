@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\Products\BulkUpdateRequest;
 use App\Http\Requests\Dashboard\Products\CreateRequest;
 use App\Http\Requests\Dashboard\Products\SetCoverRequest;
 use App\Http\Requests\Dashboard\Products\UpdateRankingRequest;
@@ -35,21 +36,21 @@ class ProductsController extends Controller
                 ->setPerBy(20)
                 ->setEagerRelations(['category'])
                 ->filterAllProducts($request->toArray()),
-            'categories' => $this->categoryRepository->index()
+            'categories' => $this->categoryRepository->getAllCategories()
         ]);
     }
 
     public function create()
     {
         return view('dashboard.products.edit-add', [
-            'categories' => $this->categoryRepository->index(),
+            'categories' => $this->categoryRepository->getAllCategories(),
             'product_units' => $this->repository->getProductUnits()
         ]);
     }
 
     public function store(CreateRequest $request)
     {
-        $process = $this->repository->createProduct($request);
+        $process = $this->repository->createProduct($request->validated());
 
         if ($process->success()) {
             session()->flash('toast_success', 'Ürün başarıyla oluşturuldu');
@@ -65,12 +66,12 @@ class ProductsController extends Controller
         $product = $this->repository->findById($id);
 
         if (!$product) {
-            return abort(403);
+            return abort(404);
         }
 
         return view('dashboard.products.edit-add', [
             'product' => $product,
-            'categories' => $this->categoryRepository->index(),
+            'categories' => $this->categoryRepository->getAllCategories(),
             'product_units' => $this->repository->getProductUnits()
         ]);
     }
@@ -80,7 +81,7 @@ class ProductsController extends Controller
         $product = $this->repository->findById($id);
 
         if (!$product) {
-            return abort(403);
+            return abort(404);
         }
 
         $process = $this->repository
@@ -89,7 +90,7 @@ class ProductsController extends Controller
             ->updateProduct($request->validated());
 
         if ($process->success()) {
-            session()->flash('toast_success', 'Ürün başarıyla oluşturuldu');
+            session()->flash('toast_success', 'Ürün başarıyla güncellendi');
             return redirect()->route('dashboard.products.index');
         } else {
             session()->flash('toast_error', $process->errors()->first());
@@ -102,7 +103,7 @@ class ProductsController extends Controller
         $product = $this->repository->setEagerRelations(['galleries'])->findById($id);
 
         if (!$product) {
-            return abort(403);
+            return abort(404);
         }
 
         return view('dashboard.products.galleries', [
@@ -279,25 +280,44 @@ class ProductsController extends Controller
         }
     }
 
-    public function variants($id)
-    {
-        $product = $this->repository->findById($id);
+    public function delete_product_variant(Request $request, $productId, $variantId){
+        $process = $this->repository
+            ->setLocale('tr')
+            ->deleteProductVariant($productId, $variantId);
 
-        if (!$product) {
-            abort(403);
+        if ($process->success()) {
+            return response()->json([
+              'status' => true,
+              'message' => 'Ürün başarıyla kaldırıldı'
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => $process->errors()->first()
+            ]);
         }
-
-        return view('dashboard.products.variants.index', [
-            'product' => $product,
-            'variants' => $this->repository
-                ->setLocale('tr')
-                ->setProduct($product)
-                ->setPerBy(30)
-                ->getAllVariants()
-        ]);
     }
 
-    public function edit_variant($productId, $variantId){
-        return view('dashboard.products.variants.edit');
+    public function bulkUpdate(BulkUpdateRequest $request){
+        $process = $this->repository
+            ->setLocale('tr')
+            ->bulkUpdate($request->input('products'), $request->except('products', '_token'));
+
+        if ($process->success()) {
+            session()->flash('toast_success', 'Ürünler başarıyla güncellendi');
+            return redirect()->route('dashboard.products.index');
+        } else {
+            session()->flash('toast_error', $process->errors()->first());
+            return redirect()->route('dashboard.products.index');
+        }
+    }
+
+    public function product_categories(){
+        return view('dashboard.products.categories.index', [
+            'categories' => $this->categoryRepository
+                ->setPerBy(20)
+                ->setEagerRelations(['category'])
+                ->getAllMainCategories(),
+        ]);
     }
 }

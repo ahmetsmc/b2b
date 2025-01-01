@@ -24,6 +24,8 @@ Route::domain('dashboard.b2b.test')->as('dashboard.')->group(function () {
             Route::post('/{id}/edit', [ProductsController::class, 'update']);
             Route::get('/{id}/delete', [ProductsController::class, 'delete'])->name('delete');
             Route::post('/{id}/update/status', [ProductsController::class, 'updateStatus'])->name('update.status');
+            Route::post('/bulk-update', [ProductsController::class, 'bulkUpdate'])->name('bulk.update');
+            Route::post('/bulk-delete', [ProductsController::class, 'bulkDelete'])->name('bulk.delete');
 
             Route::prefix('/{id}/gallery')->as('gallery.')->group(function () {
                 Route::get('/', [ProductsController::class, 'gallery'])->name('index');
@@ -33,10 +35,12 @@ Route::domain('dashboard.b2b.test')->as('dashboard.')->group(function () {
                 Route::post('/delete', [ProductsController::class, 'deleteGallery'])->name('delete');
             });
 
-            Route::prefix('/{id}/variants')->as('variants.')->group(function () {
-                Route::get('/', [ProductsController::class, 'variants'])->name('index');
-                Route::get('/create', [ProductsController::class, 'create_variant'])->name('create');
-                Route::get('/{variantId}/edit', [ProductsController::class, 'edit_variant'])->name('edit');
+            Route::prefix('/{productId}/variants')->as('variants.')->group(function () {
+                Route::post('/{variantId}/delete', [ProductsController::class, 'delete_product_variant'])->name('delete');
+            });
+
+            Route::prefix('/categories')->as('categories.')->group(function () {
+                Route::get('/', [ProductsController::class, 'product_categories'])->name('index');
             });
         });
     });

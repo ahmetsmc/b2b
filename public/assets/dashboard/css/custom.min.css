@@ -81,6 +81,219 @@ body.loader {
     overflow: hidden;
 }
 
-.top-70{
+.top-70 {
     top: 71px;
+}
+
+.variant-item {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.variant-item > div {
+    flex: 1;
+}
+
+.variant-item > .button {
+    max-width: 40px;
+}
+
+
+.variant-item > .image {
+    max-width: 80px;
+    position: relative;
+    overflow: hidden;
+}
+
+.variant-item > .image img {
+    border-radius: 8px;
+    margin: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 50px;
+    object-fit: contain;
+}
+
+
+.variant-item > .image input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 1px;
+}
+
+.variant-item > .image label {
+    width: 100%;
+    display: block;
+}
+
+
+/*# sourceMappingURL=custom.min.css.map */
+.form-group {
+    position: relative;
+}
+
+.form-group.invalid-form-group > .form-label {
+    color: var(--vz-danger-text-emphasis);
+}
+
+.form-group.invalid-form-group > .form-control,
+.form-group.invalid-form-group > .form-select {
+    border-color: var(--vz-danger-text-emphasis)
+}
+
+.ck-powered-by {
+    display: none !important;
+}
+
+.invalid-form-group:has([data-choices]):has(.is-open) .invalid-tooltip {
+    display: none !important;
+}
+
+.choices {
+    z-index: 6;
+}
+
+.choices [hidden] {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    opacity: 0;
+    width: 1px !important;
+    height: 1px;
+}
+
+.loader {
+    position: relative;
+}
+
+.loader:before {
+    content: '';
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999999 !important;
+    background: var(--vz-primary);
+    opacity: .8;
+}
+
+.loader:after {
+    content: '';
+    width: 50px;
+    padding: 8px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--vz-secondary);
+    --_m: conic-gradient(#0000 10%, #000),
+    linear-gradient(#000 0 0) content-box;
+    -webkit-mask: var(--_m);
+    mask: var(--_m);
+    -webkit-mask-composite: source-out;
+    mask-composite: subtract;
+    animation: l3 1s infinite linear;
+    display: block;
+    z-index: 9999999 !important;
+    position: fixed;
+    left: calc(50% - 25px);
+    top: calc(50% - 25px);
+}
+
+@keyframes l3 {
+    to {
+        transform: rotate(1turn)
+    }
+}
+
+body.loader {
+    overflow: hidden;
+}
+
+.top-70 {
+    top: 71px;
+}
+
+.variant-item {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.variant-item > div {
+    flex: 1;
+}
+
+.variant-item > .button {
+    max-width: 40px;
+}
+
+
+.variant-item > .image {
+    max-width: 80px;
+    position: relative;
+    overflow: hidden;
+}
+
+.variant-item > .image img {
+    border-radius: 8px;
+    margin: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 50px;
+    object-fit: contain;
+}
+
+
+.variant-item > .image input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 1px;
+}
+
+.variant-item > .image label {
+    width: 100%;
+    display: block;
+}
+
+
+#bulkActionProducts {
+    left: 50%;
+    transform: translate(-50%, 30px);
+    background: var(--vz-secondary-bg);
+    border-radius: var(--vz-border-radius);
+    bottom: 90px;
+    z-index: 999;
+    transition: 300ms;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#bulkActionProducts.active{
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+}
+
+#bulkActionProducts .close-actions {
+    position: absolute;
+    right: 0;
+    top: -30px;
+    width: 40px;
+    height: 20px;
+    font-size: 20px;
+    background: transparent;
+    border: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }

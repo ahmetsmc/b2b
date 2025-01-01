@@ -26,7 +26,7 @@ class Editor extends Component
     {
         $this->class = "ck-editor" . $this->class;
         $this->label = !$this->label ? $this->placeholder : $this->label;
-        $this->id = !$this->id ? str($this->name . rand(1000000, 99999999))->camel() : $this->id;
+        $this->id = !$this->id ? str(str($this->name . rand(1000000, 99999999))->slug('_'))->camel() : $this->id;
         $this->groupClass = !$this->error ? "form-group" : "form-group invalid-form-group";
         $this->fileUploadDir = !$this->fileUploadDir ? "content" : $this->fileUploadDir;
         $this->value = !$this->value ? old($this->name) : $this->value;

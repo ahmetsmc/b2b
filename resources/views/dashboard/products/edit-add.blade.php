@@ -1,5 +1,9 @@
 @extends('dashboard.layouts.master')
 
+@push('head')
+    <meta name="delete-variant-uri" content="{{ route('dashboard.products.variants.delete', [isset($product) ? $product->id : ':productId', ':variantId']) }}">
+@endpush
+
 @section('content')
 
     <div class="row">
@@ -22,7 +26,7 @@
         </div>
     </div>
 
-    <form method="POST" action="{{ url()->current() }}">
+    <form method="POST" action="{{ url()->current() }}" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-lg-9">
@@ -143,127 +147,64 @@
                     </div>
                 </div>
 
-                {{--                <div class="card">--}}
-                {{--                    <div class="card-header">--}}
-                {{--                        <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">--}}
-                {{--                            <li class="nav-item">--}}
-                {{--                                <a class="nav-link active" data-bs-toggle="tab" href="#addproduct-general-info"--}}
-                {{--                                   role="tab">--}}
-                {{--                                    Fiyat ve Stok--}}
-                {{--                                </a>--}}
-                {{--                            </li>--}}
-                {{--                            <li class="nav-item">--}}
-                {{--                                <a class="nav-link" data-bs-toggle="tab" href="#addproduct-metadata" role="tab">--}}
-                {{--                                    Meta Data--}}
-                {{--                                </a>--}}
-                {{--                            </li>--}}
-                {{--                        </ul>--}}
-                {{--                    </div>--}}
-                {{--                    <!-- end card header -->--}}
-                {{--                    <div class="card-body">--}}
-                {{--                        <div class="tab-content">--}}
-                {{--                            <div class="tab-pane active" id="addproduct-general-info" role="tabpanel">--}}
-                {{--                                <div class="row">--}}
-                {{--                                    <div class="col-lg-6">--}}
-                {{--                                        <div class="mb-3">--}}
-                {{--                                            <label class="form-label" for="manufacturer-name-input">Manufacturer--}}
-                {{--                                                Name</label>--}}
-                {{--                                            <input type="text" class="form-control" id="manufacturer-name-input"--}}
-                {{--                                                   placeholder="Enter manufacturer name">--}}
-                {{--                                        </div>--}}
-                {{--                                    </div>--}}
-                {{--                                    <div class="col-lg-6">--}}
-                {{--                                        <div class="mb-3">--}}
-                {{--                                            <label class="form-label" for="manufacturer-brand-input">Manufacturer--}}
-                {{--                                                Brand</label>--}}
-                {{--                                            <input type="text" class="form-control" id="manufacturer-brand-input"--}}
-                {{--                                                   placeholder="Enter manufacturer brand">--}}
-                {{--                                        </div>--}}
-                {{--                                    </div>--}}
-                {{--                                </div>--}}
-                {{--                                <!-- end row -->--}}
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Ürün Varyantları</h5>
+                        <button type="button" class="btn btn-primary btn-sm" id="createVariant">Varyant Ekle</button>
+                    </div>
+                    <div class="card-body pt-0">
+                        @if($errors->has('variants.*'))
+                            @foreach ($errors->get('variants.*') as $messages)
+                                @foreach ($messages as $message)
+                                    <div class="alert alert-danger">
+                                        {{ $message }}
+                                    </div>
+                                @endforeach
+                            @endforeach
+                        @endif
+                        <div id="productVariants">
+                            <div>
+                                <x-dashboard.partials.products.variant class="default-variant-item" :variant="null"/>
+                            </div>
 
-                {{--                                <div class="row">--}}
-                {{--                                    <div class="col-lg-3 col-sm-6">--}}
-                {{--                                        <div class="mb-3">--}}
-                {{--                                            <label class="form-label" for="stocks-input">Stocks</label>--}}
-                {{--                                            <input type="text" class="form-control" id="stocks-input"--}}
-                {{--                                                   placeholder="Stocks">--}}
-                {{--                                            <div class="invalid-feedback">Please Enter a product stocks.</div>--}}
-                {{--                                        </div>--}}
-                {{--                                    </div>--}}
-                {{--                                    <div class="col-lg-3 col-sm-6">--}}
-                {{--                                        <div class="mb-3">--}}
-                {{--                                            <label class="form-label" for="product-discount-input">Discount</label>--}}
-                {{--                                            <div class="input-group mb-3">--}}
-                {{--                                                <span class="input-group-text" id="product-discount-addon">%</span>--}}
-                {{--                                                <input type="text" class="form-control" id="product-discount-input"--}}
-                {{--                                                       placeholder="Enter discount" aria-label="discount"--}}
-                {{--                                                       aria-describedby="product-discount-addon">--}}
-                {{--                                            </div>--}}
-                {{--                                        </div>--}}
-                {{--                                    </div>--}}
-                {{--                                    <div class="col-lg-3 col-sm-6">--}}
-                {{--                                        <div class="mb-3">--}}
-                {{--                                            <label class="form-label" for="orders-input">Orders</label>--}}
-                {{--                                            <input type="text" class="form-control" id="orders-input"--}}
-                {{--                                                   placeholder="Orders">--}}
-                {{--                                            <div class="invalid-feedback">Please Enter a product orders.</div>--}}
-                {{--                                        </div>--}}
-                {{--                                    </div>--}}
-                {{--                                </div>--}}
-                {{--                            </div>--}}
-
-                {{--                            <div class="tab-pane" id="addproduct-metadata" role="tabpanel">--}}
-                {{--                                <div class="row">--}}
-                {{--                                    <div class="col-lg-6">--}}
-                {{--                                        <div class="mb-3">--}}
-                {{--                                            <label class="form-label" for="meta-title-input">Meta title</label>--}}
-                {{--                                            <input type="text" class="form-control" placeholder="Enter meta title"--}}
-                {{--                                                   id="meta-title-input">--}}
-                {{--                                        </div>--}}
-                {{--                                    </div>--}}
-
-                {{--                                    <div class="col-lg-6">--}}
-                {{--                                        <div class="mb-3">--}}
-                {{--                                            <label class="form-label" for="meta-keywords-input">Meta Keywords</label>--}}
-                {{--                                            <input type="text" class="form-control" placeholder="Enter meta keywords"--}}
-                {{--                                                   id="meta-keywords-input">--}}
-                {{--                                        </div>--}}
-                {{--                                    </div>--}}
-                {{--                                </div>--}}
-
-                {{--                                <div>--}}
-                {{--                                    <label class="form-label" for="meta-description-input">Meta Description</label>--}}
-                {{--                                    <textarea class="form-control" id="meta-description-input"--}}
-                {{--                                              placeholder="Enter meta description" rows="3"></textarea>--}}
-                {{--                                </div>--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
+                            @if(isset($product))
+                                @foreach($product->variants as $variant)
+                                    <x-dashboard.partials.products.variant :variant="$variant"/>
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="col-lg-3">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">İşlemler</h5>
-                    </div>
-                    <div class="card-body">
-                        <button type="submit" class="btn btn-success w-100">Kaydet</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Özet</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="p-5 text-center">
-                            <p class="text-muted mb-0">Henüz kayıt yok</p>
+                <div class="position-sticky top-70">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">İşlemler</h5>
+                        </div>
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-success w-100">Kaydet</button>
                         </div>
                     </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Özet</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="p-5 text-center">
+                                <p class="text-muted mb-0">Henüz kayıt yok</p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </form>
 @endsection
+
+@push('javascript')
+    <script src="{{ asset('assets/dashboard/js/products.init.js') }}"></script>
+@endpush

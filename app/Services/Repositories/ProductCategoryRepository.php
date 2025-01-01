@@ -13,19 +13,19 @@ class ProductCategoryRepository
 
     public ProductCategory|null $productCategory = null;
 
-    public function index(): Collection
+    public function getAllCategories(): Collection
     {
         return ProductCategory::all();
     }
 
-    public function store($data): static
+    public function createProductCategory($data): static
     {
         $this->productCategory = ProductCategory::create($data);
 
         return $this;
     }
 
-    public function update(int $id, array $data): static
+    public function updateProductCategory(int $id, array $data): static
     {
         $productCategory = ProductCategory::find($id);
 
@@ -39,7 +39,7 @@ class ProductCategoryRepository
         return $this;
     }
 
-    public function delete(int $id): static
+    public function deleteProductCategory(int $id): static
     {
         $productCategory = ProductCategory::find($id);
 
@@ -61,5 +61,10 @@ class ProductCategoryRepository
     public function productCategory(): ?ProductCategory
     {
         return $this->productCategory;
+    }
+
+    public function getAllMainCategories()
+    {
+        return ProductCategory::filterParent()->with($this->withEagerLoads)->paginate($this->perBy);
     }
 }

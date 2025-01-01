@@ -12,6 +12,8 @@ use App\Traits\HasUpload;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\Drivers\Gd\Decoders\EncodedImageObjectDecoder;
 use Intervention\Image\EncodedImage;
 use Intervention\Image\ImageManager;
@@ -52,9 +54,13 @@ class ProductRepository implements ProductInterface
         })->paginate($this->perBy);
     }
 
-    public function createProduct($request): static
+    public function createProduct($data): static
     {
-        $this->product = Product::create($request->all());
+        $this->product = Product::create($data);
+
+        if ($this->product && isset($data['variants'])) {
+            $this->createVariants($this->product, $data['variants']);
+        }
 
         return $this;
     }
@@ -67,8 +73,33 @@ class ProductRepository implements ProductInterface
         }
 
         $this->product->update($data);
+        if (isset($data['variants'])) {
+            $this->createVariants($this->product, $data['variants']);
+        }
 
         return $this;
+    }
+
+    public function createVariants(Product $product, $variants)
+    {
+        $this->product = $product;
+
+        foreach ($variants as $key => $variant) {
+            if (isset($variant['image'])) {
+                $dir = 'products/' . $this->product->id . '/variants';
+                checkAndCreateFolder($dir);
+                $variant['image'] = $this->uploadFile($variant['image'], $dir);
+            }
+
+            if (str_starts_with($key, 'new')) {
+                $this->product->variants()->create($variant);
+            } else {
+                $item = $this->product->variants()->where('id', $key)->first();
+                if ($item) {
+                    $item->update($variant);
+                }
+            }
+        }
     }
 
     public function deleteProduct(int $id): static
@@ -257,5 +288,87 @@ class ProductRepository implements ProductInterface
         }
 
         return ProductVariant::with($this->withEagerLoads)->where('product_id', $this->product->id)->paginate($this->perBy);
+    }
+
+    public function findVariantById(int $variantId): ProductVariant|null
+    {
+        return ProductVariant::with($this->withEagerLoads)->where('id', $variantId)->first();
+    }
+
+    public function deleteProductVariant(int $productId, int $variantId)
+    {
+        $product = Product::with('variants')->where('id', $productId)
+            ->whereHas('variants', function ($query) use ($variantId) {
+                return $query->where('id', $variantId);
+            })->first();
+
+        if (!$product) {
+            $this->setError(trans('Product variant not found', [], $this->locale));
+        }
+
+        $variant = $product->variants()->where('id', $variantId)->first();
+
+        if ($variant) {
+            // todo: ilişkiler (sepet vs) kontrol et
+            $variant->delete();
+        }
+
+        return $this;
+    }
+
+    public function bulkUpdate(array $productIds, array $actions)
+    {
+        $products = Product::whereIn('id', $productIds)->get();
+
+        if (count($productIds) != $products->count()) {
+            $this->setError('Seçilen ürünlerde geçersiz kayıtlar var.');
+            return $this;
+        }
+
+        $data = $this->prepareBulkUpdateData($products, $actions);
+
+        $this->handleBulkDelete($data);
+
+        return $this;
+    }
+
+    public function prepareBulkUpdateData($products, $actions): array
+    {
+        $updateData = [];
+
+        foreach ($actions as $field => $action) {
+            if (isset($action['status']) && !is_null($action['status'])) {
+                foreach ($products as $product) {
+                    if (isset($action['value']) && !is_null($action['value'])){
+                        $value = match ($action['status']) {
+                            'update' => $action['value'],
+                            'add' => $product->$field + (int)$action['value'],
+                            'subtract' => $product->$field - (int)$action['value'],
+                        };
+
+                        $updateData[$product->id][$field] = $value;
+                    }
+                }
+            }
+        }
+
+        return $updateData;
+    }
+
+    public function handleBulkDelete(array $data)
+    {
+        DB::beginTransaction();
+
+        try {
+            foreach ($data as $productId => $action) {
+                $product = Product::find($productId);
+                $product->update($action);
+            }
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error('productRepository@handleBulkDelete: ' . $exception->getMessage());
+            $this->setError('Bilinmeyen bir sorun oluştu, lütfen tekrar deneyin');
+        }
     }
 }
